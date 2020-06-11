@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="use_nodelet" default="false"/>
+  <arg name="start_manager" default="false"/>
+
+  <arg name="device_name_1" default="device_d415_1"/>
+  <arg name="device_name_2" default="device_d415_2"/>
+
+  <arg name="input_1" default="/device_d415_1/depth/points/grid_filtered"/>
+  <arg name="input_2" default="/device_d415_2/depth/points/grid_filtered"/>
+  <arg name="output" default="/pointcloud_fusion/points"/>
+  <arg name="target_frame" default="marker_4"/>
+
+  <!-- param -->
+  <arg name="rate" default="10"/>
+  <arg name="debug" default="true"/>
+
+  <group ns="/pointcloud_fusion">
+
+    <include file="$(find pointcloud_fusion)/launch/fusion_pointcloud.launch">
+      <arg name="use_nodelet" value="$(arg use_nodelet)"/>
+      <arg name="start_manager" value="$(arg start_manager)"/>
+      <arg name="topic_sub_pointcloud_1" value="$(arg input_1)"/>
+      <arg name="topic_sub_pointcloud_2" value="$(arg input_2)"/>
+      <arg name="topic_pub_pointcloud" value="$(arg output)"/>
+      <arg name="target_frame" value="$(arg target_frame)"/>
+      <arg name="rate" value="$(arg rate)"/>
+      <arg name="debug" value="$(arg debug)"/>
+    </include>
+
+  </group>
+</launch>
+

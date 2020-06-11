@@ -1,0 +1,7 @@
+<library path="lib/libfusion">
+  <class name="pointcloud_fusion/FusionCloudNodelet" type="pointcloud_fusion::FusionCloudNodelet" base_class_type="nodelet::Nodelet">
+    <description>
+      todo
+    </description>
+  </class>
+</library>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="use_nodelet" default="true"/>
+  <arg name="start_manager" default="true"/>
+  <arg name="manager" default="standalone_nodelet"/>
+
+  <arg name="topic_sub_pointcloud_1" />
+  <arg name="topic_sub_pointcloud_2" />
+  <arg name="topic_pub_pointcloud" />
+  <arg name="target_frame"/>
+
+  <!-- param -->
+  <arg name="rate" default="0"/>
+  <arg name="debug" default="false"/>
+
+  <node pkg="nodelet"
+        type="nodelet"
+        name="$(arg manager)"
+        args="manager"
+        if="$(arg start_manager)"
+        output="screen"/>
+
+  <node pkg="nodelet"
+        type="nodelet"
+        name="FusionCloudNodelet"
+        args="load pointcloud_fusion/FusionCloudNodelet $(arg manager)"
+        if="$(arg use_nodelet)"
+        output="screen">
+    <param name="topic_sub_pointcloud_device_1" value="$(arg topic_sub_pointcloud_1)"/>
+    <param name="topic_sub_pointcloud_device_2" value="$(arg topic_sub_pointcloud_2)"/>
+    <param name="topic_pub_pointcloud" value="$(arg topic_pub_pointcloud)"/>
+    <param name="target_frame" value="$(arg target_frame)"/>
+    <param name="rate" value="$(arg rate)"/>
+    <param name="debug" value="$(arg debug)"/>
+  </node>
+
+  <node pkg="pointcloud_fusion"
+        type="fusion_pointcloud_exe"
+        name="FusionCloud"
+        unless="$(arg use_nodelet)"
+        output="screen">
+    <param name="topic_sub_pointcloud_device_1" value="$(arg topic_sub_pointcloud_1)"/>
+    <param name="topic_sub_pointcloud_device_2" value="$(arg topic_sub_pointcloud_2)"/>
+    <param name="topic_pub_pointcloud" value="$(arg topic_pub_pointcloud)"/>
+    <param name="target_frame" value="$(arg target_frame)"/>
+    <param name="rate" value="$(arg rate)"/>
+    <param name="debug" value="$(arg debug)"/>
+  </node>
+
+</launch>
